@@ -1,0 +1,30 @@
+name: Otomatik Google Play İkon Güncelleyici
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Her gün gece yarısı otomatik çalışır
+  workflow_dispatch: # İstersen GitHub panelinden tek tıkla manuel de çalıştırabilirsin
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repoyu Kopyala
+        uses: actions/checkout@v4
+
+      - name: Node.js Kur
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: İkonları Güncelle
+        run: node update-icons.js
+
+      - name: Değişiklikleri Kaydet ve Gönder
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "🤖 Google Play ikonları otomatik güncellendi"
+          branch: main
