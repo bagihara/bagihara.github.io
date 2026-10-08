@@ -1,11 +1,885 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hara Games</title>
+    <meta name="theme-color" content="#070b1f">
+    <meta name="description" content="Hara Games — Android uygulamaları ve oyunları.">
+    <title>Hara Games | Apps & Games</title>
+
+    <style>
+        :root {
+            --bg: #070b1f;
+            --bg-soft: #0d1230;
+            --card: rgba(19, 25, 58, 0.72);
+            --card-solid: #111738;
+            --text: #f7f8ff;
+            --muted: #aeb5d4;
+            --cyan: #25d8ff;
+            --blue: #467cff;
+            --purple: #9a55ff;
+            --pink: #e65cff;
+            --gold: #ffc94a;
+            --border: rgba(255,255,255,.10);
+            --shadow: 0 24px 70px rgba(0,0,0,.35);
+            --radius: 24px;
+            --max: 1120px;
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 10% 0%, rgba(70,124,255,.18), transparent 28%),
+                radial-gradient(circle at 90% 8%, rgba(230,92,255,.15), transparent 30%),
+                radial-gradient(circle at 50% 55%, rgba(37,216,255,.06), transparent 35%),
+                var(--bg);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+                         "Segoe UI", sans-serif;
+            line-height: 1.6;
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .container {
+            width: min(calc(100% - 40px), var(--max));
+            margin: 0 auto;
+        }
+
+        /* ---------- NAV ---------- */
+
+        .nav {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            border-bottom: 1px solid rgba(255,255,255,.07);
+            background: rgba(7,11,31,.78);
+            backdrop-filter: blur(18px);
+        }
+
+        .nav-inner {
+            min-height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 800;
+            letter-spacing: .02em;
+        }
+
+        .brand img {
+            width: 46px;
+            height: 46px;
+            object-fit: contain;
+            border-radius: 13px;
+        }
+
+        .brand span {
+            font-size: 1.08rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 26px;
+            color: var(--muted);
+            font-size: .94rem;
+        }
+
+        .nav-links a:hover { color: #fff; }
+
+        /* ---------- HERO ---------- */
+
+        .hero {
+            min-height: 610px;
+            display: grid;
+            place-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 70px 0 90px;
+        }
+
+        .hero::before,
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 430px;
+            height: 430px;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: .18;
+            pointer-events: none;
+        }
+
+        .hero::before {
+            left: -180px;
+            top: 30px;
+            background: var(--cyan);
+        }
+
+        .hero::after {
+            right: -180px;
+            bottom: -100px;
+            background: var(--pink);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 850px;
+        }
+
+        .hero-logo {
+            width: clamp(130px, 18vw, 190px);
+            height: clamp(130px, 18vw, 190px);
+            object-fit: contain;
+            margin-bottom: 18px;
+            filter: drop-shadow(0 18px 35px rgba(0,0,0,.4));
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 7px 13px;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 999px;
+            background: rgba(255,255,255,.045);
+            color: #dce3ff;
+            font-size: .82rem;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cyan), var(--pink));
+            box-shadow: 0 0 14px rgba(37,216,255,.8);
+        }
+
+        h1 {
+            margin: 20px 0 14px;
+            font-size: clamp(3rem, 8vw, 6.5rem);
+            line-height: .95;
+            letter-spacing: -.055em;
+        }
+
+        .gradient-text {
+            background: linear-gradient(100deg, #fff 5%, #6de7ff 34%, #b879ff 68%, #ff83d7 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            max-width: 670px;
+            margin: 0 auto;
+            color: var(--muted);
+            font-size: clamp(1rem, 2vw, 1.2rem);
+        }
+
+        .hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            padding: 0 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,255,255,.12);
+            font-weight: 800;
+            transition: transform .2s ease, border-color .2s ease, background .2s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255,255,255,.24);
+        }
+
+        .button-primary {
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            box-shadow: 0 12px 30px rgba(91,82,255,.25);
+        }
+
+        .button-secondary {
+            background: rgba(255,255,255,.05);
+            color: #dfe5ff;
+        }
+
+        /* ---------- SECTION ---------- */
+
+        section { padding: 86px 0; }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 30px;
+            margin-bottom: 34px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            font-size: clamp(2rem, 4vw, 3.2rem);
+            letter-spacing: -.04em;
+        }
+
+        .section-heading p {
+            max-width: 510px;
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .section-label {
+            margin: 0 0 8px;
+            color: var(--cyan);
+            font-size: .78rem;
+            font-weight: 900;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+        }
+
+        /* ---------- PRODUCTS ---------- */
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            position: relative;
+            overflow: hidden;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            padding: 28px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            background:
+                linear-gradient(145deg, rgba(255,255,255,.055), transparent 42%),
+                var(--card);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(14px);
+            transition: transform .25s ease, border-color .25s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(117,160,255,.38);
+        }
+
+        .product-card::after {
+            content: "";
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            right: -75px;
+            top: -75px;
+            border-radius: 50%;
+            background: var(--accent, var(--blue));
+            filter: blur(75px);
+            opacity: .18;
+            pointer-events: none;
+        }
+
+        .product-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-icon {
+            width: 82px;
+            height: 82px;
+            flex: 0 0 82px;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            border-radius: 22px;
+            border: 1px solid rgba(255,255,255,.13);
+            background: linear-gradient(145deg, rgba(255,255,255,.11), rgba(255,255,255,.025));
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+        }
+
+        .product-icon img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+        }
+
+        .icon-fallback {
+            display: grid;
+            place-items: center;
+            width: 100%;
+            height: 100%;
+            color: #fff;
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+        }
+
+        .product-card h3 {
+            margin: 4px 0 4px;
+            font-size: 1.45rem;
+            letter-spacing: -.025em;
+        }
+
+        .type {
+            display: inline-block;
+            color: var(--muted);
+            font-size: .78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .09em;
+        }
+
+        .product-description {
+            position: relative;
+            z-index: 1;
+            color: #c6cce4;
+            margin: 22px 0;
+            max-width: 620px;
+        }
+
+        .features {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .feature {
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,.055);
+            color: #cbd2eb;
+            font-size: .78rem;
+            border: 1px solid rgba(255,255,255,.07);
+        }
+
+        .product-footer {
+            position: relative;
+            z-index: 1;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .play-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 15px;
+            border-radius: 12px;
+            background: #fff;
+            color: #0a0d1b;
+            font-size: .88rem;
+            font-weight: 900;
+            transition: transform .2s ease;
+        }
+
+        .play-button:hover { transform: translateY(-2px); }
+
+        .play-symbol {
+            width: 0;
+            height: 0;
+            border-top: 7px solid transparent;
+            border-bottom: 7px solid transparent;
+            border-left: 11px solid #2bb673;
+        }
+
+        .updated {
+            color: #858eaf;
+            font-size: .76rem;
+        }
+
+        /* ---------- ABOUT ---------- */
+
+        .about {
+            display: grid;
+            grid-template-columns: 1.05fr .95fr;
+            gap: 22px;
+        }
+
+        .about-card {
+            padding: 34px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,.035);
+        }
+
+        .about-card h2 {
+            margin: 0 0 15px;
+            font-size: 2rem;
+        }
+
+        .about-card p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .principles {
+            display: grid;
+            gap: 12px;
+        }
+
+        .principle {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.06);
+        }
+
+        .principle-icon {
+            width: 38px;
+            height: 38px;
+            flex: 0 0 38px;
+            display: grid;
+            place-items: center;
+            border-radius: 11px;
+            background: linear-gradient(135deg, rgba(37,216,255,.16), rgba(154,85,255,.16));
+        }
+
+        .principle strong {
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .principle span {
+            color: var(--muted);
+            font-size: .9rem;
+        }
+
+        /* ---------- FOOTER ---------- */
+
+        footer {
+            padding: 45px 0 35px;
+            border-top: 1px solid rgba(255,255,255,.07);
+        }
+
+        .footer-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 800;
+        }
+
+        .footer-brand img {
+            width: 34px;
+            height: 34px;
+            object-fit: contain;
+            border-radius: 9px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            color: var(--muted);
+            font-size: .88rem;
+        }
+
+        .footer-links a:hover { color: #fff; }
+
+        .copyright {
+            margin-top: 25px;
+            color: #68708f;
+            font-size: .78rem;
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+
+        @media (max-width: 800px) {
+            .nav-links { display: none; }
+
+            .products,
+            .about {
+                grid-template-columns: 1fr;
+            }
+
+            .section-heading {
+                display: block;
+            }
+
+            .section-heading p {
+                margin-top: 12px;
+            }
+
+            .hero {
+                min-height: 560px;
+                padding-top: 55px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .container {
+                width: min(calc(100% - 26px), var(--max));
+            }
+
+            section { padding: 65px 0; }
+
+            .product-card,
+            .about-card {
+                padding: 22px;
+            }
+
+            .product-top {
+                gap: 13px;
+            }
+
+            .product-icon {
+                width: 68px;
+                height: 68px;
+                flex-basis: 68px;
+                border-radius: 18px;
+            }
+
+            .product-footer {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .footer-inner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Hara Games</h1>
+    <header class="nav">
+        <div class="container nav-inner">
+            <a class="brand" href="#top" aria-label="Hara Games ana sayfa">
+                <img src="hara_logo.png" alt="Hara Games logo">
+                <span>HARA GAMES</span>
+            </a>
+
+            <nav class="nav-links" aria-label="Ana menü">
+                <a href="#apps">Uygulamalar</a>
+                <a href="#games">Oyunlar</a>
+                <a href="#about">Hakkımızda</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="top">
+        <section class="hero">
+            <div class="container hero-content">
+                <img class="hero-logo" src="hara_logo.png" alt="Hara Games">
+
+                <div class="eyebrow">Independent Android Studio</div>
+
+                <h1>
+                    <span class="gradient-text">Hara Games</span>
+                </h1>
+
+                <p>
+                    Faydalı uygulamalar, eğlenceli oyunlar ve sürekli gelişen
+                    küçük dijital deneyimler. Hara Games dünyasına hoş geldin.
+                </p>
+
+                <div class="hero-actions">
+                    <a class="button button-primary" href="#apps">Uygulamaları keşfet</a>
+                    <a class="button button-secondary" href="#games">Oyunlara göz at</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="apps">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <p class="section-label">Useful by design</p>
+                        <h2>Uygulamalar</h2>
+                    </div>
+                    <p>
+                        Günlük hayatı biraz daha kolaylaştırmak için geliştirdiğimiz
+                        sade ve pratik Android uygulamaları.
+                    </p>
+                </div>
+
+                <div class="products" id="app-list"></div>
+            </div>
+        </section>
+
+        <section id="games">
+            <div class="container">
+                <div class="section-heading">
+                    <div>
+                        <p class="section-label">Play. Think. Repeat.</p>
+                        <h2>Oyunlar</h2>
+                    </div>
+                    <p>
+                        Kısa bir eğlence molasından yüksek skor mücadelesine kadar,
+                        farklı oyun fikirlerini keşfetmeye devam ediyoruz.
+                    </p>
+                </div>
+
+                <div class="products" id="game-list"></div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <div class="about">
+                    <div class="about-card">
+                        <p class="section-label">Hara Games</p>
+                        <h2>Küçük fikirlerden gerçek deneyimlere.</h2>
+                        <p>
+                            Hara Games; Android uygulamaları ve oyunları geliştiren
+                            bağımsız bir geliştirici stüdyosudur. Amacımız her projede
+                            anlaşılır arayüzler, keyifli deneyimler ve zamanla daha iyi
+                            hale gelen ürünler ortaya çıkarmak.
+                        </p>
+                    </div>
+
+                    <div class="about-card">
+                        <div class="principles">
+                            <div class="principle">
+                                <div class="principle-icon">✦</div>
+                                <div>
+                                    <strong>Sade</strong>
+                                    <span>Gereksiz karmaşadan uzak, anlaşılır deneyimler.</span>
+                                </div>
+                            </div>
+
+                            <div class="principle">
+                                <div class="principle-icon">⚡</div>
+                                <div>
+                                    <strong>Eğlenceli</strong>
+                                    <span>Oyunlarda hızlı öğrenilen, keyif veren mekanikler.</span>
+                                </div>
+                            </div>
+
+                            <div class="principle">
+                                <div class="principle-icon">↗</div>
+                                <div>
+                                    <strong>Sürekli gelişen</strong>
+                                    <span>Yeni fikirler, yeni uygulamalar ve yeni oyunlar.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-inner">
+                <a class="footer-brand" href="#top">
+                    <img src="hara_logo.png" alt="">
+                    <span>Hara Games</span>
+                </a>
+
+                <div class="footer-links">
+                    <a href="#about">Hakkımızda</a>
+                    <a href="https://docs.google.com/document/d/1SGgo4OdLcvjbQ5zeBZV5MhBO94CE6iFEyLcj2wLljVA/edit?usp=sharing" target="_blank" rel="noopener">Gizlilik</a>
+                    <a href="mailto:bagihara@gmail.com">Destek</a>
+                    <a href="https://play.google.com/store/apps/developer?id=Hara+Games&hl=tr" target="_blank" rel="noopener">Google Play</a>
+                </div>
+            </div>
+
+            <div class="copyright">
+                © <span id="year"></span> Hara Games. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /*
+         * YENİ ÜRÜN EKLEME:
+         * Aşağıdaki dizilere yeni bir kayıt eklemen yeterli.
+         * packageName, type, title, description, features, playUrl ve updated alanlarını doldur.
+         * İkon Play Store'dan otomatik alınır.
+         */
+
+        const apps = [
+            {
+                title: "Nereye Koydum?",
+                type: "Uygulama",
+                packageName: "com.haragames.nereyekoydum",
+                accent: "#25d8ff",
+                description:
+                    "Anahtarlarından elektronik eşyalarına, belgelerinden ev eşyalarına kadar nereye ne koyduğunu kaydet ve ihtiyaç duyduğunda saniyeler içinde bul.",
+                features: [
+                    "Hızlı arama",
+                    "Favoriler",
+                    "Türkçe & İngilizce",
+                    "Karanlık tema",
+                    "Çevrimdışı kullanım",
+                    "Yedekleme"
+                ],
+                updated: "7 Ekim 2026",
+                playUrl: "https://play.google.com/store/apps/details?id=com.haragames.nereyekoydum"
+            }
+        ];
+
+        const games = [
+            {
+                title: "Final Move",
+                type: "Bulmaca",
+                packageName: "com.haragames.sonhamle",
+                accent: "#9a55ff",
+                description:
+                    "Hızını, odağını, hafızanı ve mantığını test eden mini oyunlarla dolu hızlı tempolu bir mücadele. Riskini seç, serini koru ve son hamleni doğru yap.",
+                features: [
+                    "30 turluk Marathon",
+                    "Günlük Challenge",
+                    "Başarımlar",
+                    "Liderlik tabloları",
+                    "Risk sistemi"
+                ],
+                updated: "4 Ekim 2026",
+                playUrl: "https://play.google.com/store/apps/details?id=com.haragames.sonhamle"
+            },
+            {
+                title: "BunRun",
+                type: "Aksiyon",
+                packageName: "com.HaraGames.BunRun",
+                accent: "#25d8ff",
+                description:
+                    "Kahraman tavşanın büyülenmiş arkadaşlarını kurtarmasına yardım et. Havuçları topla, karakterini özelleştir, bölümleri tamamla ve sonsuz modda ne kadar ilerleyebildiğini gör.",
+                features: [
+                    "Macera",
+                    "Karakter özelleştirme",
+                    "Mini oyunlar",
+                    "Sonsuz mod",
+                    "Geliştirmeler",
+                    "Yeni seviyeler"
+                ],
+                updated: "5 Ekim 2026",
+                playUrl: "https://play.google.com/store/apps/details?id=com.HaraGames.BunRun"
+            }
+        ];
+
+        const iconCache = new Map();
+
+        async function getPlayStoreIcon(packageName) {
+            if (iconCache.has(packageName)) return iconCache.get(packageName);
+
+            const playUrl = `https://play.google.com/store/apps/details?id=${encodeURIComponent(packageName)}&hl=tr`;
+            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(playUrl)}&t=${Date.now()}`;
+
+            try {
+                const response = await fetch(proxyUrl, { cache: "no-store" });
+                if (!response.ok) throw new Error("Play Store verisi alınamadı.");
+
+                const page = await response.text();
+                const doc = new DOMParser().parseFromString(page, "text/html");
+                const images = [...doc.querySelectorAll("img")];
+                const icon = images.find(img =>
+                    (img.getAttribute("src") || "").includes("play-lh.googleusercontent.com")
+                );
+
+                if (!icon) throw new Error("Uygulama ikonu bulunamadı.");
+
+                const iconUrl = icon.getAttribute("src");
+                iconCache.set(packageName, iconUrl);
+                return iconUrl;
+            } catch (error) {
+                console.warn(`Google Play ikonu alınamadı: ${packageName}`, error);
+                return null;
+            }
+        }
+
+        function renderProducts(list, targetId) {
+            const target = document.getElementById(targetId);
+
+            target.innerHTML = list.map((product, index) => `
+                <article class="product-card" style="--accent:${product.accent}">
+                    <div class="product-top">
+                        <div class="product-icon" id="${targetId}-icon-${index}" aria-label="${product.title} uygulama ikonu">
+                            <span class="icon-fallback">${product.title.charAt(0)}</span>
+                        </div>
+                        <div>
+                            <span class="type">${product.type}</span>
+                            <h3>${product.title}</h3>
+                        </div>
+                    </div>
+
+                    <p class="product-description">${product.description}</p>
+
+                    <div class="features">
+                        ${product.features.map(feature => `<span class="feature">${feature}</span>`).join("")}
+                    </div>
+
+                    <div class="product-footer">
+                        <a class="play-button" href="${product.playUrl}" target="_blank" rel="noopener" aria-label="${product.title} Google Play'de aç">
+                            <span class="play-symbol"></span>
+                            Google Play'de Gör
+                        </a>
+                        <span class="updated">Güncellendi: ${product.updated}</span>
+                    </div>
+                </article>
+            `).join("");
+
+            list.forEach(async (product, index) => {
+                const iconUrl = await getPlayStoreIcon(product.packageName);
+                if (!iconUrl) return;
+
+                const iconContainer = document.getElementById(`${targetId}-icon-${index}`);
+                if (!iconContainer) return;
+
+                const img = document.createElement("img");
+                img.src = iconUrl;
+                img.alt = `${product.title} uygulama ikonu`;
+                img.loading = "lazy";
+                img.referrerPolicy = "no-referrer";
+                img.onerror = () => {
+                    iconContainer.innerHTML = `<span class="icon-fallback">${product.title.charAt(0)}</span>`;
+                };
+
+                iconContainer.innerHTML = "";
+                iconContainer.appendChild(img);
+            });
+        }
+
+        renderProducts(apps, "app-list");
+        renderProducts(games, "game-list");
+
+        document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>
