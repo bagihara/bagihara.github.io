@@ -628,6 +628,7 @@
                 title: "Nereye Koydum?",
                 type: "Uygulama",
                 packageName: "com.haragames.nereyekoydum",
+                iconUrl: "https://play-lh.googleusercontent.com/iconUrlDefault", // Otomatik güncellenecek
                 accent: "#25d8ff",
                 description: "Anahtarlarından elektronik eşyalarına, belgelerinden ev eşyalarına kadar nereye ne koyduğunu kaydet ve ihtiyaç duyduğunda saniyeler içinde bul.",
                 features: ["Hızlı arama", "Favoriler", "Türkçe & İngilizce", "Karanlık tema", "Çevrimdışı kullanım", "Yedekleme"],
@@ -641,6 +642,7 @@
                 title: "Final Move",
                 type: "Bulmaca",
                 packageName: "com.haragames.sonhamle",
+                iconUrl: "https://play-lh.googleusercontent.com/iconUrlDefault",
                 accent: "#9a55ff",
                 description: "Hızını, odağını, hafızanı ve mantığını test eden mini oyunlarla dolu hızlı tempolu bir mücadele. Riskini seç, serini koru ve son hamleni doğru yap.",
                 features: ["30 turluk Marathon", "Günlük Challenge", "Başarımlar", "Liderlik tabloları", "Risk sistemi"],
@@ -651,6 +653,7 @@
                 title: "BunRun",
                 type: "Aksiyon",
                 packageName: "com.HaraGames.BunRun",
+                iconUrl: "https://play-lh.googleusercontent.com/iconUrlDefault",
                 accent: "#25d8ff",
                 description: "Kahraman tavşanın büyülenmiş arkadaşlarını kurtarmasına yardım et. Havuçları topla, karakterini özelleştir, bölümleri tamamla ve sonsuz modda ne kadar ilerleyebildiğini gör.",
                 features: ["Macera", "Karakter özelleştirme", "Mini oyunlar", "Sonsuz mod", "Geliştirmeler", "Yeni seviyeler"],
@@ -659,42 +662,17 @@
             }
         ];
 
-        const iconCache = new Map();
-
-        async function getPlayStoreIcon(packageName) {
-            if (iconCache.has(packageName)) return iconCache.get(packageName);
-
-            const playUrl = `https://play.google.com/store/apps/details?id=${encodeURIComponent(packageName)}&hl=tr`;
-            const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(playUrl)}&t=${Date.now()}`;
-
-            try {
-                const response = await fetch(proxyUrl, { cache: "no-store" });
-                if (!response.ok) throw new Error("Play Store verisi alınamadı.");
-
-                const page = await response.text();
-                const doc = new DOMParser().parseFromString(page, "text/html");
-                const images = [...doc.querySelectorAll("img")];
-                const icon = images.find(img => (img.getAttribute("src") || "").includes("play-lh.googleusercontent.com"));
-
-                if (!icon) throw new Error("Uygulama ikonu bulunamadı.");
-
-                const iconUrl = icon.getAttribute("src");
-                iconCache.set(packageName, iconUrl);
-                return iconUrl;
-            } catch (error) {
-                console.warn(`Google Play ikonu alınamadı: ${packageName}`, error);
-                return null;
-            }
-        }
-
         function renderProducts(list, targetId) {
             const target = document.getElementById(targetId);
 
-            target.innerHTML = list.map((product, index) => `
+            target.innerHTML = list.map((product) => `
                 <article class="product-card" style="--accent:${product.accent}">
                     <div class="product-top">
-                        <div class="product-icon" id="${targetId}-icon-${index}" aria-label="${product.title} uygulama ikonu">
-                            <span class="icon-fallback">${product.title.charAt(0)}</span>
+                        <div class="product-icon" aria-label="${product.title} uygulama ikonu">
+                            ${product.iconUrl && !product.iconUrl.includes("Default") 
+                                ? `<img src="${product.iconUrl}" alt="${product.title}" loading="lazy" referrerPolicy="no-referrer">`
+                                : `<span class="icon-fallback">${product.title.charAt(0)}</span>`
+                            }
                         </div>
                         <div>
                             <span class="type">${product.type}</span>
@@ -717,26 +695,6 @@
                     </div>
                 </article>
             `).join("");
-
-            list.forEach(async (product, index) => {
-                const iconUrl = await getPlayStoreIcon(product.packageName);
-                if (!iconUrl) return;
-
-                const iconContainer = document.getElementById(`${targetId}-icon-${index}`);
-                if (!iconContainer) return;
-
-                const img = document.createElement("img");
-                img.src = iconUrl;
-                img.alt = `${product.title} uygulama ikonu`;
-                img.loading = "lazy";
-                img.referrerPolicy = "no-referrer";
-                img.onerror = () => {
-                    iconContainer.innerHTML = `<span class="icon-fallback">${product.title.charAt(0)}</span>`;
-                };
-
-                iconContainer.innerHTML = "";
-                iconContainer.appendChild(img);
-            });
         }
 
         renderProducts(apps, "app-list");
