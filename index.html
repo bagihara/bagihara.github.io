@@ -373,6 +373,17 @@
             align-items: center;
             justify-content: space-between;
             gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .product-site-link {
+            color: #cbd2eb;
+            font-size: .9rem;
+            text-underline-offset: 4px;
+        }
+
+        .product-site-link:hover {
+            color: var(--cyan);
         }
 
         .play-button {
@@ -648,13 +659,14 @@
             },
             {
                 title: "Pocketverse",
-                type: "Kişisel yaşam",
+                type: "Kişisel gelişim & odaklanma",
+                packageName: "com.haragames.pocketverse",
+                iconUrl: "https://play-lh.googleusercontent.com/xIQnbCGkZtgqQqQSwZ3OUmOamUd6a0IOAAUTgDsw3XlEWqqt9kIC5m74J7lGCFTviQwpVwfzHeYIRKOVRG-2Rw=s0-br30",
                 accent: "#e65cff",
-                description: "Kendi köşeni tasarla, günlük yaşamına renk kat! Odanı kişiselleştir, müzik dinle, hayallerini ve anılarını biriktir. Takvim, defterler ve kitap-film takibi gibi özelliklerle kendine özel bir dünya oluştur.",
-                features: ["Oda kişiselleştirme", "Takvim & Defterler", "Hayal panosu", "Kitap & film takibi"],
-                status: "Yapım Aşamasında",
-                actionUrl: "https://bagihara.github.io/Pocketverse/",
-                actionText: "Pocketverse'i Keşfet"
+                description: "Günlük görevlerini planla, alışkanlıklarını ve kitaplarını takip et. İzlediğin film ve dizileri takip et, hayallerini panona taşı ve kazandığın yıldızlarla kendi dijital odanı tasarla.",
+                features: ["Oda kişiselleştirme", "Görev & alışkanlık takibi", "Hayal panosu", "Kitap, film & dizi takibi"],
+                playUrl: "https://play.google.com/store/apps/details?id=com.haragames.pocketverse&hl=tr",
+                websiteUrl: "https://bagihara.github.io/Pocketverse/"
             },
             {
                 title: "DailyQuest",
@@ -721,6 +733,7 @@
                             ${product.actionUrl ? "✦" : '<span class="play-symbol"></span>'}
                             ${product.actionText || "Google Play'de Gör"}
                         </a>
+                        ${product.websiteUrl ? `<a class="product-site-link" href="${product.websiteUrl}" aria-label="${product.title} web sitesini keşfet">Web sitesini keşfet ↗</a>` : ""}
                     </div>
                 </article>
             `).join("");
