@@ -463,6 +463,46 @@
         .principle strong { display: block; margin-bottom: 2px; }
         .principle span { color: var(--muted); font-size: .9rem; }
 
+        /* ---------- SUPPORT ---------- */
+        .support-options { display: grid; gap: 12px; }
+
+        .support-option {
+            padding: 18px;
+            border-radius: 16px;
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.06);
+        }
+
+        .support-option strong { display: block; margin-bottom: 4px; }
+        .support-option p { color: var(--muted); font-size: .88rem; margin: 0 0 14px; }
+
+        .wallet-row { display: flex; gap: 8px; align-items: center; }
+
+        .wallet-row code {
+            flex: 1;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: rgba(7,11,31,.6);
+            border: 1px solid rgba(255,255,255,.08);
+            font-size: .78rem;
+            word-break: break-all;
+        }
+
+        .copy-button {
+            padding: 10px 14px;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 10px;
+            background: rgba(255,255,255,.06);
+            color: #dfe5ff;
+            font-size: .82rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: background .2s ease;
+        }
+
+        .copy-button:hover { background: rgba(255,255,255,.12); }
+
         /* ---------- FOOTER ---------- */
         footer {
             padding: 45px 0 35px;
@@ -533,6 +573,7 @@
                 <a href="#apps">Uygulamalar</a>
                 <a href="#games">Oyunlar</a>
                 <a href="#about">Hakkımızda</a>
+                <a href="#destek">Destek Ol</a>
             </nav>
         </div>
     </header>
@@ -619,6 +660,43 @@
                 </div>
             </div>
         </section>
+
+        <section id="destek">
+            <div class="container">
+                <div class="about">
+                    <div class="about-card">
+                        <p class="section-label">Destek</p>
+                        <h2>Ücretsiz kalalım, birlikte büyütelim.</h2>
+                        <p>
+                            Hara Games'teki tüm uygulama ve oyunlar ücretsiz ve reklamsız.
+                            Beğendiğin bir uygulama olduysa geliştirmeye dilediğin miktarda
+                            destek olabilirsin. Her destek, bir sonraki sürümün motivasyonu
+                            ve yakıtı oluyor. 💙
+                        </p>
+                    </div>
+
+                    <div class="about-card">
+                        <div class="support-options">
+                            <div class="support-option">
+                                <strong>Destek Ol</strong>
+                                <p>Geliştirmeye devam edebilmemize yardımcı olmak isterseniz aşağıdaki linke tıklayın.</p>
+                                <a class="button button-primary" href="https://ppr.ist/2F6rpzWeC" target="_blank" rel="noopener">Destek Ol</a>
+                            </div>
+
+                            <!-- İstersen kripto seçeneğini aç: adresi yaz, bu yorum satırlarını kaldır.
+                            <div class="support-option">
+                                <strong>💠 Kripto ile destek (USDT · TRC20)</strong>
+                                <div class="wallet-row">
+                                    <code id="wallet">CÜZDAN_ADRESI_BURAYA</code>
+                                    <button class="copy-button" onclick="copyWallet()">Kopyala</button>
+                                </div>
+                            </div>
+                            -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -631,6 +709,7 @@
 
                 <div class="footer-links">
                     <a href="#about">Hakkımızda</a>
+                    <a href="#destek">☕ Destek Ol</a>
                     <a href="https://bagihara.github.io/Pocketverse/PocketVerse_Gizlilik_Politikasi.html" target="_blank" rel="noopener">Gizlilik Politikası</a>
                     <a href="https://bagihara.github.io/Pocketverse/PocketVerse_Hizmet_Sartlari.html" target="_blank" rel="noopener">Kullanım Şartları</a>
                     <a href="mailto:bagihara@gmail.com">Destek</a>
@@ -743,6 +822,15 @@
         renderProducts(games, "game-list");
 
         document.getElementById("year").textContent = new Date().getFullYear();
+
+        function copyWallet() {
+            const metin = document.getElementById("wallet").innerText;
+            navigator.clipboard.writeText(metin).then(() => {
+                const b = document.querySelector(".copy-button");
+                b.textContent = "Kopyalandı ✓";
+                setTimeout(() => b.textContent = "Kopyala", 1500);
+            });
+        }
     </script>
 </body>
 </html>
